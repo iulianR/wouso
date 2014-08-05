@@ -37,11 +37,11 @@ class ChallengeUser(Player):
         today_start = datetime.combine(now, time())
         today_end = datetime.combine(now, time(23, 59, 59))
         logging.info("today_start: %s, today_end: %s, self.last_launched: %s" % (today_start, today_end, self.last_launched))
+        if self.magic.has_modifier('challenge-cannot-challenge'):
+            return False
         if not self.last_launched:
             return True
         if today_start <= self.last_launched <= today_end:
-            return False
-        if self.magic.has_modifier('challenge-cannot-challenge'):
             return False
         return True
 
@@ -670,7 +670,7 @@ class DefaultChallengeManager(ChallengeManager):
             #Check for spell evade
             if self.challenge.user_lost.user.magic.has_modifier('challenge-evade'):
                 random.seed()
-                if random.random() < 0.33:
+                if random.random() < 0.20:
                     #He's lucky,no penalty,return warranty
                     scoring.score(self.challenge.user_lost.user, ChallengeGame, 'chall-warranty-return', external_id=self.challenge.id)
                     Message.send(sender=None, receiver=self.challenge.user_lost.user, subject="Challenge evaded", text="You have just evaded losing points in a challenge")
