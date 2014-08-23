@@ -11,8 +11,6 @@ class Modifier(models.Model):
         - Badges
         - Achievements
     """
-    class Meta:
-        abstract = True
 
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=2000, null=True, blank=True)
@@ -23,8 +21,71 @@ class Modifier(models.Model):
     #effects =
 
 
-class SpellScroll(Modifier):
-    TYPES = (('o', 'neutral'), ('p', 'positive'), ('n', 'negative'), ('s', 'self'))
+    @staticmethod
+    def give_to_player(player, modifier, amount=1):
+        if amount <= 0:
+            return
+
+        try:
+            pamount = PlayerModifierAmount.objects.get(player=player, modifier=modifier)
+        except PlayerModifierAmount.DoesNotExist:
+            pamount = 0
+
+        if not pamount:
+            pamount = PlayerModifierAmount.objects.create(player=player, modifier=modifier)
+        else:
+            pamount.amount += amount
+            pamount.save()
+        return pamount
+
+    @staticmethod
+    def remove_from_player(player, modifier, amount=1):
+        if amount <= 0:
+            return
+
+        try:
+            pamount = PlayerModifierAmount.objects.get(player=player, modifier=modifier)
+            assert pamount.amount > 0
+        except (PlayerModifierAmount.DoesNotExist, AssertionError):
+            return 'Spell unavailable'
+
+        pamount.amount -= amount
+        pamount.save()
+        return pamount
+
 
     def __unicode__(self):
         return self.name
+
+
+class SpellScroll(Modifier):
+    #TYPES = (('o', 'neutral'), ('p', 'positive'), ('n', 'negative'), ('s', 'self'))
+    #duration = models.IntegerField(default=5)
+
+    def __unicode__(self):
+        return self.name
+
+
+class PlayerModifierAmount(models.Model):
+    """
+     Tie modifier to collecting user
+    """
+    class Meta:
+        unique_together = ('player', 'modifier')
+
+    player = models.ForeignKey('user.Player')
+    modifier = models.ForeignKey(Modifier)
+    amount = models.IntegerField(default=1)
+
+    def __unicode__(self):
+        return u"%s has %s [%d]" % (self.player, self.modifier, self.amount)
+
+
+class PlayerModifierDue(models.Model):
+    """
+     Tie modifier, casting user, duration with the victim player
+    """
+    class Meta:
+        unique_together = ('player', 'modifier')
+
+    player = models.Fo

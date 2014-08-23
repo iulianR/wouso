@@ -10,8 +10,11 @@
     </tr>
     {% for s in spell_scroll %}
     <tr>
-        {{ s.name }}
+        <td>{{ s.name }}</td>
     </tr>
     {% endfor %}
 </table>
+
+<a class="button" href="{% url add_spell_scroll %}">Add new spell scroll</a>
+<a class="button" href="{% url test %}">Test</a>
 {% endblock %}

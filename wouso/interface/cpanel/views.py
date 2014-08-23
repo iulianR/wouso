@@ -38,6 +38,7 @@ from wouso.interface.cpanel.models import Customization, Switchboard, \
 from wouso.interface.apps.qproposal import QUEST_GOLD, CHALLENGE_GOLD, QOTD_GOLD
 from wouso.middleware.impersonation import ImpersonateMiddleware
 from wouso.utils.import_questions import import_from_file
+from core.modifiers.models import Modifier, PlayerModifierAmount
 from forms import QuestionForm, TagsForm, UserForm, SpellForm, AddTagForm, \
     AnswerForm, EditReportForm, RaceForm, PlayerGroupForm, RoleForm, \
     StaticPageForm, NewsForm, SpellScrollForm
@@ -1291,3 +1292,13 @@ class AddSpellScrollView(CreateView):
 
 add_spell_scroll = permission_required('config.change_setting')(
     AddSpellScrollView.as_view())
+
+@permission_required('config.change_setting')
+def test(request):
+    player = Player.objects.get(pk=13)
+    modifier = Modifier.objects.get(pk=1)
+    #SpellScroll.give_to_player(player, modifier)
+    SpellScroll.remove_from_player(player, modifier)
+    print PlayerModifierAmount.objects.all()
+
+    return redirect('spell_scroll')

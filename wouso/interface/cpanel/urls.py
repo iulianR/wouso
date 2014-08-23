@@ -41,6 +41,9 @@ upat = [
 
     # Modifiers
     url(r'^spell_scroll/$', 'wouso.interface.cpanel.views.spell_scroll', name='spell_scroll'),
+    url(r'^add_spell_scroll/$', 'wouso.interface.cpanel.views.add_spell_scroll', name='add_spell_scroll'),
+
+    url(r'^spell_scroll/test/$', 'wouso.interface.cpanel.views.test', name='test'),
 
     url(r'^spells/$','wouso.interface.cpanel.views.spells', name='spells'),
     url(r'^edit_spell/(?P<pk>\d+)$','wouso.interface.cpanel.views.edit_spell',name='edit_spell'),
