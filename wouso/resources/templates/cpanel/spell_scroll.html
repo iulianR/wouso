@@ -1,0 +1,17 @@
+{% extends 'cpanel/index.html' %}
+{% load user %}
+
+{% block sectiontitle %}Spell Scrolls{% endblock %}
+
+{% block sectioncontent %}
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    {% for s in spell_scroll %}
+    <tr>
+        {{ s.name }}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

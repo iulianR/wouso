@@ -1,4 +1,4 @@
 from django.contrib import admin
-from models import Modifier
+from models import SpellScroll
 
-admin.site.register(Modifier)
+admin.site.register(SpellScroll)

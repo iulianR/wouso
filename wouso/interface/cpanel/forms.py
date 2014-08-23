@@ -7,6 +7,8 @@ from wouso.core.security.models import Report
 from wouso.core.user.models import Race, PlayerGroup
 from wouso.interface.apps.pages.models import StaticPage, NewsItem
 
+from wouso.core.modifiers.models import SpellScroll
+
 
 class QuestionForm(forms.Form):
     text = forms.CharField(max_length=2000, widget=forms.Textarea)
@@ -197,3 +199,8 @@ class StaticPageForm(forms.ModelForm):
 class NewsForm(forms.ModelForm):
     class Meta:
         model = NewsItem
+
+
+class SpellScrollForm(forms.ModelForm):
+    class Meta:
+        model = SpellScroll

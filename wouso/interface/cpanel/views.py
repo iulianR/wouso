@@ -22,7 +22,7 @@ from wouso.core.decorators import staff_required
 from wouso.core.ui import get_sidebar
 from wouso.core.user.models import Player, PlayerGroup, Race
 from wouso.core.magic.models import Artifact, ArtifactGroup, Spell
-from wouso.core.modifiers.models import Modifier
+from wouso.core.modifiers.models import SpellScroll
 from wouso.core.qpool.models import Schedule, Question, Tag, Category, Answer
 from wouso.core.qpool import get_questions_with_category
 from wouso.core.god import God
@@ -40,7 +40,7 @@ from wouso.middleware.impersonation import ImpersonateMiddleware
 from wouso.utils.import_questions import import_from_file
 from forms import QuestionForm, TagsForm, UserForm, SpellForm, AddTagForm, \
     AnswerForm, EditReportForm, RaceForm, PlayerGroupForm, RoleForm, \
-    StaticPageForm, NewsForm
+    StaticPageForm, NewsForm, SpellScrollForm
 from forms import FormulaForm, TagForm
 
 
@@ -1270,12 +1270,24 @@ def fwd(request):
     return redirect('all_players')
 
 
-# temporary
-class ModifiersView(ModuleViewMixin, ListView):
-    model = Modifier
-    template_name = 'cpanel/modifiers_home.html'
-    context_object_name = 'modifier'
-    module = 'modifier'
+class SpellScrollView(ModuleViewMixin, ListView):
+    model = SpellScroll
+    template_name = 'cpanel/spell_scroll.html'
+    context_object_name = 'spell_scroll'
+    module = 'spell_scroll'
 
 
-modifiers = permission_required('config.change_setting')(ModifiersView.as_view())
+spell_scroll = permission_required('config.change_setting')(SpellScrollView.as_view())
+
+
+class AddSpellScrollView(CreateView):
+    template_name = "cpanel/add_spell_scroll.html"
+    model = SpellScroll
+    form_class = SpellScrollForm
+
+    def get_success_url(self):
+        return reverse('spell_scroll')
+
+
+add_spell_scroll = permission_required('config.change_setting')(
+    AddSpellScrollView.as_view())
