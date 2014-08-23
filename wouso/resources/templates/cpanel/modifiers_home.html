@@ -1,0 +1,18 @@
+{% extends 'cpanel/index.html' %}
+{% load user %}
+{% load artifacts %}
+
+{% block sectiontitle %}Modifiers{% endblock %}
+
+{% block sectioncontent %}
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    {% for m in modifiers %}
+    <tr>
+        {{ m.name }}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

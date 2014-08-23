@@ -22,6 +22,7 @@ from wouso.core.decorators import staff_required
 from wouso.core.ui import get_sidebar
 from wouso.core.user.models import Player, PlayerGroup, Race
 from wouso.core.magic.models import Artifact, ArtifactGroup, Spell
+from wouso.core.modifiers.models import Modifier
 from wouso.core.qpool.models import Schedule, Question, Tag, Category, Answer
 from wouso.core.qpool import get_questions_with_category
 from wouso.core.god import God
@@ -1267,3 +1268,14 @@ def fwd(request):
         player = get_object_or_404(Player, pk=request.POST.get('player'))
         return redirect('manage_player', pk=player.pk)
     return redirect('all_players')
+
+
+# temporary
+class ModifiersView(ModuleViewMixin, ListView):
+    model = Modifier
+    template_name = 'cpanel/modifiers_home.html'
+    context_object_name = 'modifier'
+    module = 'modifier'
+
+
+modifiers = permission_required('config.change_setting')(ModifiersView.as_view())
