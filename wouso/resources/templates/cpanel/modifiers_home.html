@@ -1,18 +1,20 @@
 {% extends 'cpanel/index.html' %}
-{% load user %}
-{% load artifacts %}
+{% load i18n %}
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ baseurl }}/static/css/tabs.css" />
+{% endblock %}
 
 {% block sectiontitle %}Modifiers{% endblock %}
 
 {% block sectioncontent %}
-<table>
-    <tr>
-        <th>Name</th>
-    </tr>
-    {% for m in modifiers %}
-    <tr>
-        {{ m.name }}
-    </tr>
-    {% endfor %}
-</table>
+<ul class="tabs">
+    <li class="active"><a href="{% url spell_scroll %}">Spell Scrolls</a></li>
+</ul>
+
+<div class="tab_container" style="padding-top: 6%">
+    <div id="tab-1" class="tab_content">
+        {% include 'cpanel/spell_scroll.html' %}
+    </div>
+</div>
+
 {% endblock %}

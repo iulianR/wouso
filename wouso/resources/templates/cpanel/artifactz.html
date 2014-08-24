@@ -1,0 +1,19 @@
+{% extends 'cpanel/index.html' %}
+{% load user %}
+
+{% block sectiontitle %}Artifactz{% endblock %}
+
+{% block sectioncontent %}
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    {% for a in artifactz %}
+    <tr>
+        <td>{{ a.name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a class="button" href="{% url add_artifactz %}">Add artifactz</a>
+{% endblock %}

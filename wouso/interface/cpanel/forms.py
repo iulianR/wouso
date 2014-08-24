@@ -8,6 +8,7 @@ from wouso.core.user.models import Race, PlayerGroup
 from wouso.interface.apps.pages.models import StaticPage, NewsItem
 
 from wouso.core.modifiers.models import SpellScroll
+from core.modifiers.models import Artifactz
 
 
 class QuestionForm(forms.Form):
@@ -204,3 +205,7 @@ class NewsForm(forms.ModelForm):
 class SpellScrollForm(forms.ModelForm):
     class Meta:
         model = SpellScroll
+
+class ArtifactzForm(forms.ModelForm):
+    class Meta:
+        model = Artifactz

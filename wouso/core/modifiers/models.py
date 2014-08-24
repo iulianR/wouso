@@ -20,7 +20,6 @@ class Modifier(models.Model):
     #constraints = models.CommaSeparatedIntegerField
     #effects =
 
-
     @staticmethod
     def give_to_player(player, modifier, amount=1):
         if amount <= 0:
@@ -60,8 +59,13 @@ class Modifier(models.Model):
 
 class SpellScroll(Modifier):
     #TYPES = (('o', 'neutral'), ('p', 'positive'), ('n', 'negative'), ('s', 'self'))
-    #duration = models.IntegerField(default=5)
+    duration = models.IntegerField(default=5)
 
+    def __unicode__(self):
+        return self.name
+
+
+class Artifactz(Modifier):
     def __unicode__(self):
         return self.name
 
@@ -88,4 +92,17 @@ class PlayerModifierDue(models.Model):
     class Meta:
         unique_together = ('player', 'modifier')
 
-    player = models.Fo
+    player = models.ForeignKey('user.Player')
+    modifier = models.ForeignKey(Modifier)
+    source = models.ForeignKey('user.Player', related_name='modifier_source')
+    due = models.DateTimeField()
+
+    seen = models.BooleanField(default=False, blank=True)
+
+    @staticmethod
+    def get_expired(date):
+        return PlayerModifierDue.objects.filter(due__lte=date)
+
+    def __unicode__(self):
+        return u"%s casted on %s until %s [%s]" % \
+               (self.spell, self.player, self.due, self.source)

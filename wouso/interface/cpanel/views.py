@@ -38,10 +38,10 @@ from wouso.interface.cpanel.models import Customization, Switchboard, \
 from wouso.interface.apps.qproposal import QUEST_GOLD, CHALLENGE_GOLD, QOTD_GOLD
 from wouso.middleware.impersonation import ImpersonateMiddleware
 from wouso.utils.import_questions import import_from_file
-from core.modifiers.models import Modifier, PlayerModifierAmount
+from core.modifiers.models import Modifier, PlayerModifierAmount, Artifactz
 from forms import QuestionForm, TagsForm, UserForm, SpellForm, AddTagForm, \
     AnswerForm, EditReportForm, RaceForm, PlayerGroupForm, RoleForm, \
-    StaticPageForm, NewsForm, SpellScrollForm
+    StaticPageForm, NewsForm, SpellScrollForm, ArtifactzForm
 from forms import FormulaForm, TagForm
 
 
@@ -1292,6 +1292,31 @@ class AddSpellScrollView(CreateView):
 
 add_spell_scroll = permission_required('config.change_setting')(
     AddSpellScrollView.as_view())
+
+
+class ArtifactzView(ModuleViewMixin, ListView):
+    template_name = "cpanel/artifactz.html"
+    model = Artifactz
+    context_object_name = 'artifactz'
+    module = 'artifactz'
+
+
+artifactz = permission_required('config.change_setting')(
+    ArtifactzView.as_view())
+
+
+class AddArtifactzView(CreateView):
+    template_name = "cpanel/add_artifactz.html"
+    model = Artifactz
+    form_class = ArtifactzForm
+
+    def get_success_url(self):
+        return reverse('artifactz')
+
+
+add_artifactz = permission_required('config.change_setting')(
+    AddArtifactzView.as_view())
+
 
 @permission_required('config.change_setting')
 def test(request):
