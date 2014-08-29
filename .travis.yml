@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.7"
+env:
+  - DJANGO=1.4.2
+install:
+  - pip install -r --use-mirrors requirements-pip
+  - pip install -r --use-mirrors requirements-extra
+before_script:
+script:
+  - python manage.py magic
