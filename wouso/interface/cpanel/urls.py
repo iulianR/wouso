@@ -9,6 +9,9 @@ upat = [
     url(r'^customization/features/$', 'wouso.interface.cpanel.views.features', name='features'),
     url(r'^leaderboards/$', 'wouso.interface.cpanel.views.leaderboards', name='leaderboards'),
 
+    url(r'^groups/group_types/$', 'wouso.interface.cpanel.views.group_types', name='group_types'),
+    url(r'^groups/group_types/add/$', 'wouso.interface.cpanel.views.group_type_add', name='add_group_type'),
+
     url(r'^qpool/$', 'wouso.interface.cpanel.views.qpool_home', name='qpool_home'),
     url(r'^qpool/(?P<page>\d+)/$', 'wouso.interface.cpanel.views.qpool_home', name='qpool_home'),
     url(r'^qpool/tag_questions/$', 'wouso.interface.cpanel.views.qpool_tag_questions', name='tag_questions'),

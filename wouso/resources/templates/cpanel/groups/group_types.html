@@ -1,0 +1,29 @@
+{% extends 'cpanel/index.html' %}
+
+{% load user %}
+{% load i18n %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block sectiontitle %}
+Group types
+<div class="pull-right">
+  <a class="btn btn-primary" href="{% url add_group_type %}">
+      <span class="glyphicon glyphicon-plus"></span>{% trans 'Add group type' %}
+  </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Groups" "group_types" %}
+{% endblock %}
+
+{% block sectioncontent %}
+<ul>
+    {% for g in group_types %}
+    <li>
+      Identifier: {{g.identifier}} Name:{{g.name}} Parent type:{{g.parent_type}}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

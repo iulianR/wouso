@@ -15,6 +15,19 @@ from wouso.core.magic.models import  Spell
 from .. import deprecated
 
 
+class GroupType(models.Model):
+    """
+     Group type
+    """
+    identifier = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    parent_type = models.ForeignKey('self', blank=True, null=True)
+    #parent_group
+
+    def __unicode__(self):
+        return self.name
+
+
 class Race(models.Model):
     """ Groups a large set of players together and it's used extensively for 'can_play' checks.
     """
