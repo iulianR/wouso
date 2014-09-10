@@ -35,7 +35,10 @@
             <ul>
                 {% for g in groups %}
                 <li>
-                    group type: {{g.group_type}} Name:{{g.name}} Parent:{{g.parent}} Players:{{g.players}} Points: {{g.points}}
+                    group type: {{g.group_type}} Name: {{g.name}} Parent: {{g.parent}} Players: {{g.players}} Points: {{g.points}}
+                    <a class="btn btn-success btn-xs" href="{% url edit_group g.id %}">
+                        <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
+                    </a>
                 </li>
                 {% endfor %}
             </ul>
