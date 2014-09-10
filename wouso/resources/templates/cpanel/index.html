@@ -122,6 +122,8 @@
                 <li {% if url in request.path %}class="active"{% endif %}><a href="{% url races_groups %}">Groups</a></li>
                 {% url group_types as url %}
                 <li {% if url in request.path %}class="active"{% endif %}><a href="{% url group_types %}">Group types</a></li>
+                {% url groups as url %}
+                <li {% if url in request.path %}class="active"{% endif %}><a href="{% url groups %}">Groups</a></li>
                 {% url formulas as url %}
                 <li {% if url in request.path %}class="active"{% endif %}><a href="{% url formulas %}">Formulas</a></li>
                 {% url leaderboards as url %}

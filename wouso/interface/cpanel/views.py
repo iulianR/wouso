@@ -20,7 +20,7 @@ from django.views.generic import UpdateView, CreateView, ListView, FormView, \
 from wouso.core.config.models import Setting
 from wouso.core.decorators import staff_required
 from wouso.core.ui import get_sidebar
-from wouso.core.user.models import Player, PlayerGroup, Race, GroupType
+from wouso.core.user.models import Player, PlayerGroup, Race, GroupType, PlayersGroup
 from wouso.core.magic.models import Artifact, ArtifactGroup, Spell
 from wouso.core.qpool.models import Schedule, Question, Tag, Category, Answer
 from wouso.core.qpool import get_questions_with_category
@@ -40,7 +40,7 @@ from wouso.middleware.impersonation import ImpersonateMiddleware
 from wouso.utils.import_questions import import_from_file
 from forms import QuestionForm, TagsForm, UserForm, SpellForm, AddTagForm, \
     AnswerForm, EditReportForm, RaceForm, PlayerGroupForm, RoleForm, \
-    StaticPageForm, NewsForm, GroupTypeForm
+    StaticPageForm, NewsForm, GroupTypeForm, GroupForm
 from forms import FormulaForm, TagForm
 
 
@@ -1011,6 +1011,27 @@ class GroupTypeAddView(CreateView):
 
 
 group_type_add = staff_required(GroupTypeAddView.as_view())
+
+
+class PlayersGroupView(ListView):
+    template_name = 'cpanel/groups/groups.html'
+    model = PlayersGroup
+    context_object_name = 'groups'
+
+
+groups = staff_required(PlayersGroupView.as_view())
+
+
+class PlayersGroupAddView(CreateView):
+    model = PlayersGroup
+    template_name = 'cpanel/groups/add_group.html'
+    form_class = GroupForm
+
+    def get_success_url(self):
+        return reverse('groups')
+
+
+groups_add = staff_required(PlayersGroupAddView.as_view())
 
 
 class RacesGroupsView(ListView):

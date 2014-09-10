@@ -10,7 +10,7 @@ from wouso.core.decorators import cached_method, drop_cache
 from wouso.core.game.models import Game
 from wouso.core.magic.manager import MagicManager
 from wouso.core.god import God
-from wouso.core.magic.models import  Spell
+from wouso.core.magic.models import Spell
 
 from .. import deprecated
 
@@ -28,8 +28,25 @@ class GroupType(models.Model):
         return self.name
 
 
+class PlayersGroup(models.Model):
+    """
+     Player groups
+    """
+    group_type = models.ForeignKey(GroupType)
+    name = models.CharField(max_length=100)
+    parent = models.ForeignKey('self', blank=True, null=True)
+
+    players = models.ManyToManyField('user.Player', blank=True)
+
+    points = models.FloatField(default=0, editable=False)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Race(models.Model):
-    """ Groups a large set of players together and it's used extensively for 'can_play' checks.
+    """
+     Groups a large set of players together and it's used extensively for 'can_play' checks.
     """
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100, default='', blank=True)
