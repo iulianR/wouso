@@ -217,3 +217,10 @@ class GroupTypeForm(forms.ModelForm):
 class GroupForm(forms.ModelForm):
     class Meta:
         model = PlayersGroup
+
+    def clean_parent(self):
+        print 'here'
+        parent = self.cleaned_data.get('parent')
+        while parent is not None:
+            print parent
+            parent = parent.parent
