@@ -4,7 +4,7 @@ from wouso.core.qpool.models import Question, Answer, Schedule, Category, Tag
 from wouso.core.magic.models import Spell
 from wouso.core.scoring.models import Formula
 from wouso.core.security.models import Report
-from wouso.core.user.models import Race, PlayerGroup, GroupType, PlayersGroup
+from wouso.core.user.models import Race, PlayerGroup, GroupType, PlayersGroup, Player
 from wouso.interface.apps.pages.models import StaticPage, NewsItem
 
 
@@ -12,6 +12,7 @@ class MultipleField(forms.MultipleChoiceField):
     """No validation for choice."""
     def validate(self, value):
         return True
+
 
 class QuestionForm(forms.Form):
     text = forms.CharField(max_length=2000, widget=forms.Textarea)
@@ -218,9 +219,18 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = PlayersGroup
 
-    def clean_parent(self):
-        print 'here'
-        parent = self.cleaned_data.get('parent')
-        while parent is not None:
-            print parent
-            parent = parent.parent
+    def clean(self):
+        players = self.cleaned_data['players']
+
+        # Iterate through the selected players
+        for u in players:
+            pl = Player.objects.get(nickname=u)
+            # Add player to all parent groups
+            p = self.cleaned_data['parent']
+            while p is not None:
+                group = PlayersGroup.objects.get(name=p)
+                group.players.add(pl)
+                group.save()
+                p = p.parent
+
+        return self.cleaned_data
