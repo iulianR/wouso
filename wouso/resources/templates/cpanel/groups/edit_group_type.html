@@ -5,12 +5,13 @@
 {% load bootstrap %}
 {% load django_bootstrap_breadcrumbs %}
 
-{% block sectiontitle %}Add Group{% endblock %}
+{% block sectiontitle %}Edit Group Type{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb "Groups" "groups" %}
-    {% breadcrumb "Add Group" "add_group" %}
+    {% breadcrumb "Group Types" "group_types" %}
+    {% breadcrumb "Edit Group Types" "edit_group_type" %}
 {% endblock %}
 
 {% block sectioncontent %}
@@ -26,7 +27,7 @@
             <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                 {{ form|bootstrap_horizontal }}
                 <input type="submit" class="btn btn-primary" value="Submit">
-                <a class="btn btn-warning" href="{% url groups %}">{% trans 'Cancel' %}</a>
+                <a class="btn btn-warning" href="{% url group_types %}">{% trans 'Cancel' %}</a>
                 {% csrf_token %}
             </form>
         </div>

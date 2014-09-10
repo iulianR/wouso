@@ -36,7 +36,10 @@
             <ul>
                 {% for g in group_types %}
                 <li>
-                    Identifier: {{g.identifier}} Name:{{g.name}} Parent type:{{g.parent_type}}
+                    Identifier: {{g.identifier}} Name: {{g.name}} Parent type: {{g.parent_type}}
+                    <a class="btn btn-success btn-xs" href="{% url edit_group_type g.id %}">
+                        <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
+                    </a>
                 </li>
                 {% endfor %}
             </ul>

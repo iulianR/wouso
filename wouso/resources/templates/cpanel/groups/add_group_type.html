@@ -1,6 +1,7 @@
 {% extends 'cpanel/index.html' %}
 
 {% load user %}
+{% load i18n %}
 {% load bootstrap %}
 {% load django_bootstrap_breadcrumbs %}
 
@@ -10,7 +11,7 @@
     {{ block.super }}
     {% breadcrumb "Groups" "groups" %}
     {% breadcrumb "Group Types" "group_types" %}
-    {% breadcrumb "Add Group Types" "add_group_types" %}
+    {% breadcrumb "Add Group Types" "add_group_type" %}
 {% endblock %}
 
 {% block sectioncontent %}
@@ -26,6 +27,7 @@
             <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                 {{ form|bootstrap_horizontal }}
                 <input type="submit" class="btn btn-primary" value="Submit">
+                <a class="btn btn-warning" href="{% url group_types %}">{% trans 'Cancel' %}</a>
                 {% csrf_token %}
             </form>
         </div>

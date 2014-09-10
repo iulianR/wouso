@@ -1013,6 +1013,17 @@ class GroupTypeAddView(CreateView):
 group_type_add = staff_required(GroupTypeAddView.as_view())
 
 
+class GroupTypeEditView(UpdateView):
+    model = GroupType
+    template_name = 'cpanel/groups/edit_group_type.html'
+    form_class = GroupTypeForm
+
+    def get_success_url(self):
+        return reverse('group_types')
+
+group_type_edit = staff_required(GroupTypeEditView.as_view())
+
+
 class PlayersGroupView(ListView):
     template_name = 'cpanel/groups/groups.html'
     model = PlayersGroup
@@ -1032,6 +1043,17 @@ class PlayersGroupAddView(CreateView):
 
 
 groups_add = staff_required(PlayersGroupAddView.as_view())
+
+
+class PlayersGroupEditView(UpdateView):
+    model = PlayersGroup
+    template_name = 'cpanel/groups/edit_group.html'
+    form_class = GroupForm
+
+    def get_success_url(self):
+        return reverse('groups')
+
+groups_edit = staff_required(PlayersGroupEditView.as_view())
 
 
 class RacesGroupsView(ListView):

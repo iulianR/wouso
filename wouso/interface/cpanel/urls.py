@@ -11,8 +11,10 @@ upat = [
 
     url(r'^groups/group_types/$', 'wouso.interface.cpanel.views.group_types', name='group_types'),
     url(r'^groups/group_types/add/$', 'wouso.interface.cpanel.views.group_type_add', name='add_group_type'),
+    url(r'^groups/group_types/edit/(?P<pk>\d+)/$', 'wouso.interface.cpanel.views.group_type_edit', name='edit_group_type'),
     url(r'^groups/groups/$', 'wouso.interface.cpanel.views.groups', name='groups'),
     url(r'^groups/groups/add/$', 'wouso.interface.cpanel.views.groups_add', name='add_group'),
+    url(r'^groups/groups/edit/(?P<pk>\d+)/$', 'wouso.interface.cpanel.views.groups_edit', name='edit_group'),
 
     url(r'^qpool/$', 'wouso.interface.cpanel.views.qpool_home', name='qpool_home'),
     url(r'^qpool/(?P<page>\d+)/$', 'wouso.interface.cpanel.views.qpool_home', name='qpool_home'),
