@@ -5,25 +5,42 @@
 {% load django_bootstrap_breadcrumbs %}
 
 {% block sectiontitle %}
-Group types
-<div class="pull-right">
-  <a class="btn btn-primary" href="{% url add_group_type %}">
-      <span class="glyphicon glyphicon-plus"></span>{% trans 'Add group type' %}
-  </a>
-</div>
+
+    Group types
+
+    <div class="pull-right">
+        <a class="btn btn-primary" href="{% url add_group_type %}">
+            <span class="glyphicon glyphicon-plus"></span> {% trans 'Add group type' %}
+        </a>
+    </div>
+
 {% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Groups" "group_types" %}
+    {% breadcrumb "Groups" "groups" %}
+    {% breadcrumb "Group Types" "group_types" %}
 {% endblock %}
 
 {% block sectioncontent %}
-<ul>
-    {% for g in group_types %}
-    <li>
-      Identifier: {{g.identifier}} Name:{{g.name}} Parent type:{{g.parent_type}}
-    </li>
-    {% endfor %}
-</ul>
+
+    <div class="container-fluid">
+        <div class="col-md-10">
+            <ul class="nav nav-tabs">
+                <li {% if page == 'groups' %}class="active"{% endif %}><a href="{% url groups %}">Groups</a></li>
+                <li {% if not page %}class="active"{% endif %}><a href="{% url group_types %}">Group Types</a></li>
+            </ul>
+
+            <br/>
+
+            <ul>
+                {% for g in group_types %}
+                <li>
+                    Identifier: {{g.identifier}} Name:{{g.name}} Parent type:{{g.parent_type}}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 {% endblock %}
