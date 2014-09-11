@@ -24,6 +24,10 @@ class GroupType(models.Model):
     parent_type = models.ForeignKey('self', blank=True, null=True)
     #parent_group
 
+    @property
+    def children(self):
+        return GroupType.objects.filter(parent_type__name=self.name)
+
     def __unicode__(self):
         return self.name
 
