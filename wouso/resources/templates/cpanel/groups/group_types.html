@@ -33,26 +33,14 @@
 
             <br/>
 
-            <table class="table table-bordered table-condensed table-hover">
-                <tr>
-                    <th>Identifier</th>
-                    <th>Name</th>
-                    <th>Parent Type</th>
-                    <th>Manage</th>
-                </tr>
+            <ul>
                 {% for g in group_types %}
-                <tr>
-                    <td>{{ g.identifier }}</td>
-                    <td>{{ g.name }}</td>
-                    <td>{{ g.parent_type }}</td>
-                    <td>
-                        <a class="btn btn-success btn-xs" href="{% url edit_group_type g.id %}">
-                            <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
-                        </a>
-                    </td>
-                </tr>
+                    {% if not g.parent_type %}
+                        {% include "cpanel/groups/group_types_tree_view.html" %}
+                    {% endif %}
                 {% endfor %}
-            </table>
+            </ul>
+
         </div>
     </div>
 

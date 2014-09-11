@@ -1,0 +1,16 @@
+<li>
+    <b>{{ g.name }}</b>
+    ({{ g.identifier }})
+    <a style="color: green" title="Edit" href="{% url edit_group_type g.id %}">
+        <span class="glyphicon glyphicon-edit"></span>
+    </a>
+    {% if g.children %}
+    <ul>
+         {% for c in g.children %}
+              {% with g=c template_name="cpanel/groups/group_types_tree_view.html" %}
+                   {% include template_name %}
+              {% endwith %}
+         {% endfor %}
+    </ul>
+    {% endif %}
+</li>
