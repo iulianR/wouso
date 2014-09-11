@@ -1,0 +1,18 @@
+<li>
+    <b>{{ g.name }}</b>
+    ({{ g.group_type }})
+    players: {{ g.players.count }}
+    points: {{ g.live_points }}
+    <a style="color: green" title="Edit" href="{% url edit_group g.id %}">
+        <span class="glyphicon glyphicon-edit"></span>
+    </a>
+    {% if g.children %}
+    <ul>
+         {% for c in g.children %}
+              {% with g=c template_name="cpanel/groups/groups_tree_view.html" %}
+                   {% include template_name %}
+              {% endwith %}
+         {% endfor %}
+    </ul>
+    {% endif %}
+</li>
