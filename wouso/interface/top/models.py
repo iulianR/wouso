@@ -1,7 +1,7 @@
 from django.db.models import Sum
 import logging
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.db import models
 from django.template.loader import render_to_string
 from wouso.core.common import App
@@ -11,10 +11,12 @@ from wouso.core.ui import register_sidebar_block
 from wouso.core.user.models import Player, PlayersGroup, Race
 from wouso.games.challenge.models import ChallengeUser
 
+
 class ObjectHistory:
     @property
     def disabled(self):
         return Top.disabled()
+
 
 class GroupHistory(ObjectHistory):
     def __init__(self, group):
@@ -35,6 +37,7 @@ class GroupHistory(ObjectHistory):
         hs = History.objects.filter(group=self.group, relative_to=relative_to).order_by('-date')[:7]
         tot = len(hs)
         return [(tot - i, h.position) for (i,h) in enumerate(hs)]
+
 
 class TopUser(ObjectHistory, Player):
     _history = None
