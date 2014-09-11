@@ -43,26 +43,6 @@ class GroupType(models.Model):
         return self.name
 
 
-def dfs_group_types():
-    """
-        Returns the Group Types objects list in DFS order
-    """
-    result = []
-    stack = []
-    # for each Group Type with parent_type=None apply DFS algorithm
-    for root in GroupType.objects.filter(parent_type=None):
-        result.append(root)
-        for child in root.children:
-            stack.append(child)
-        while stack:
-            t = stack.pop()
-            result.append(t)
-            for child in t.children:
-                stack.append(child)
-
-    return result
-
-
 class PlayersGroup(models.Model):
     """
      Player groups
@@ -115,14 +95,14 @@ class PlayersGroup(models.Model):
         return self.name
 
 
-def dfs_groups():
+def dfs_order(groups):
     """
         Returns Groups objects list in DFS order
     """
     result = []
     stack = []
-    # for each Group with parent=None apply DFS algorithm
-    for root in PlayersGroup.objects.filter(parent=None):
+    # for each root in groups apply DFS algorithm
+    for root in groups:
         result.append(root)
         for child in root.children:
             stack.append(child)
