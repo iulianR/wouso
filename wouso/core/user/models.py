@@ -57,6 +57,16 @@ class PlayersGroup(models.Model):
     def children(self):
         return PlayersGroup.objects.filter(parent__name=self.name)
 
+    @property
+    def depth(self):
+        """ Calculates the depth of the group (how many groups are above) """
+        p, d = self.parent, 0
+        while p is not None:
+            d += 1
+            p = p.parent
+
+        return d
+
     def __unicode__(self):
         return self.name
 
