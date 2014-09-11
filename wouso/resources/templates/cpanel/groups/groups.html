@@ -32,16 +32,34 @@
 
             <br/>
 
-            <ul>
+            <table class="table table-bordered table-condensed table-hover">
+                <tr>
+                    <th>Group Type</th>
+                    <th>Name</th>
+                    <th>Parent</th>
+                    <th>Players</th>
+                    <th>Points</th>
+                    <th>Manage</th>
+                </tr>
                 {% for g in groups %}
-                <li>
-                    group type: {{g.group_type}} Name: {{g.name}} Parent: {{g.parent}} Players: {%for p in g.players.all %}{{p.full_name}}{%endfor%} Points: {{g.live_points}}
-                    <a class="btn btn-success btn-xs" href="{% url edit_group g.id %}">
-                        <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
-                    </a>
-                </li>
+                <tr>
+                    <td>{{ g.group_type }}</td>
+                    <td>{{ g.name }}</td>
+                    <td>{{ g.parent }}</td>
+                    <td>
+                        {% for p in g.players.all %}
+                            {{ p.full_name }}
+                        {% endfor %}
+                    </td>
+                    <td>{{ g.live_points }}</td>
+                    <td>
+                        <a class="btn btn-success btn-xs" href="{% url edit_group g.id %}">
+                            <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
-            </ul>
+            </table>
         </div>
     </div>
 
