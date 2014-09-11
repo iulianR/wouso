@@ -206,13 +206,12 @@ def player_race(request, race_id):
 
 @login_required
 def groups_index(request):
-    PlayerGroup.top = lambda(self): GroupHistory(self)
-    groups = PlayerGroup.objects.exclude(parent=None).order_by('name')
+    PlayersGroup.top = lambda(self): GroupHistory(self)
+    groups = PlayersGroup.objects.exclude(parent=None).order_by('name')
 
     return render_to_response('profile/groups.html',
                               {'groups': groups},
                               context_instance=RequestContext(request))
-
 
 
 @login_required
@@ -226,6 +225,7 @@ def magic_summary(request):
                               {'cast': cast_spells,
                               'theowner': player},
                               context_instance=RequestContext(request))
+
 
 @login_required
 def magic_spell(request):
