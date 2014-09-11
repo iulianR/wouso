@@ -119,7 +119,7 @@ def player_group(request, id, page=u'1'):
     group = get_object_or_404(PlayersGroup, pk=id)
 
     top_users = group.players.all().order_by('-points')
-    top_subgroups = PlayersGroup.all().order_by('-points')
+    top_subgroups = PlayersGroup.objects.filter(parent=group).order_by('-points')
     activity_list = Activity.get_group_activiy(group)
     paginator = Paginator(activity_list, 10)
     try:

@@ -35,24 +35,38 @@
     <div class="section-content">
     <ul class="tabs">
         <li><a href="#tab-1">{% trans 'Top users' %}</a></li>
+        {% if top_subgroups %}
+            <li><a href="#tab-2">{% trans 'Top subgroups' %}</a></li>
+        {% endif %}
         <li><a href="#tab-3">{% trans 'Activity' %}</a></li>
         <li><a href="#tab-4">{% trans 'Evolution' %}</a></li>
     </ul>
 
     <div class="tab_container">
         <div id="tab-1" class="tab_content">
-        <ol class="top top-left">
-            {% for u in top_users %}
-            <li>{% player u %}
-                <span class="points w50">{{ u.points }}</span>
-                {% if not group.parent %}
-                <span class="points w50">{% player_group u.group  %}</span>
-                {% endif %}
-            </li>
-            {% empty %}
-            <li class="empty">{% trans 'Sorry, no users in this group' %}</li>
-            {% endfor %}
-        </ol>
+            <ol class="top top-left">
+                {% for u in top_users %}
+                <li>{% player u %}
+                    <span class="points w50">{{ u.points }}</span>
+                    {% if not group.parent %}
+                    <span class="points w50">{% player_group u.group  %}</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="empty">{% trans 'Sorry, no users in this group' %}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <div id="tab-2" class="tab_content">
+            <ol class="top top-left">
+                {% for s in top_subgroups %}
+                <li>
+                    {% player_group s %}
+                    <span class="points w50">{{s.live_points}}</span>
+                </li>
+                {% endfor %}
+            </ol>
         </div>
 
         <div id="tab-3" class="tab_content">
