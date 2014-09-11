@@ -8,7 +8,7 @@ from wouso.core.common import App
 from wouso.core.config.models import BoolSetting, Setting
 from wouso.core.scoring import Coin
 from wouso.core.ui import register_sidebar_block
-from wouso.core.user.models import Player, PlayerGroup, Race
+from wouso.core.user.models import Player, PlayersGroup, Race
 from wouso.games.challenge.models import ChallengeUser
 
 class ObjectHistory:
@@ -191,7 +191,7 @@ class NewHistory(models.Model):
             return 'u'
         if isinstance(object, Race) or object is Race:
             return 'r'
-        if isinstance(object, PlayerGroup) or object is PlayerGroup:
+        if isinstance(object, PlayersGroup) or object is PlayersGroup:
             return 'g'
         if isinstance(object, Coin):
             return 'c'
@@ -200,8 +200,8 @@ class NewHistory(models.Model):
 
 class History(models.Model): # TODO: deprecate (maybe), check if NewHistory covers usage
     user = models.ForeignKey('TopUser', blank=True, null=True)
-    group = models.ForeignKey(PlayerGroup, blank=True, null=True)
-    relative_to = models.ForeignKey(PlayerGroup, blank=True, null=True, related_name='relativeto')
+    group = models.ForeignKey(PlayersGroup, blank=True, null=True)
+    relative_to = models.ForeignKey(PlayersGroup, blank=True, null=True, related_name='relativeto')
     position = models.IntegerField(default=0)
     points = models.FloatField(default=0)
     date = models.DateField()
@@ -261,7 +261,7 @@ class Top(App):
             hs.save()
 
         stdout.write(' Updating group history...\n')
-        for p in PlayerGroup.objects.filter(owner=None):
+        for p in PlayersGroup.objects.filter(owner=None):
             p.points = p.live_points
             p.save()
 
@@ -288,7 +288,7 @@ class Top(App):
         # I don't think these are necessary, so I'm disabling them for now
         return
         # In group ladder
-        for pg in PlayerGroup.objects.filter(owner=None):
+        for pg in PlayersGroup.objects.filter(owner=None):
             for i, u in enumerate(pg.players.all().order_by('-points')):
                 topuser = u.get_extension(TopUser)
                 hs, new = History.objects.get_or_create(user=topuser, date=today, relative_to=pg)
