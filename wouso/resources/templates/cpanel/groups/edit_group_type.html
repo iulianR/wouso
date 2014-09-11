@@ -26,8 +26,8 @@
 
             <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                 {{ form|bootstrap_horizontal }}
-                <input type="submit" class="btn btn-primary" value="Submit">
                 <a class="btn btn-warning" href="{% url group_types %}">{% trans 'Cancel' %}</a>
+                <input type="submit" class="btn btn-primary" value="Submit">
                 {% csrf_token %}
             </form>
         </div>
