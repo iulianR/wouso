@@ -40,6 +40,9 @@ class PlayersGroup(models.Model):
     name = models.CharField(max_length=100)
     parent = models.ForeignKey('self', blank=True, null=True)
 
+    # Attributes
+    slogan = models.CharField(max_length=200)
+
     players = models.ManyToManyField('user.Player', blank=True)
 
     points = models.FloatField(default=0, editable=False)
@@ -250,7 +253,10 @@ class Player(models.Model):
         except (PlayersGroup.DoesNotExist):
             groups = None
         filtered = [g for g in groups if not g.children]
-        return filtered[0]
+        print self.full_name
+        print PlayersGroup.objects.all()
+        print filtered
+        return filtered[0] or None
 
     def set_group(self, group):
         """

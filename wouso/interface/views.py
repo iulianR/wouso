@@ -113,9 +113,9 @@ def homepage(request, page=u'1'):
     activity = get_wall(page)
 
     topuser = profile.get_extension(TopUser)
-    topgroups = [profile.group] if profile.group else []
-    for g in topgroups:
-        g.position = TopHistory.get_user_position(topuser, relative_to=g)
+    #topgroups = [profile.group] if profile.group else []
+    #for g in topgroups:
+    #    g.position = TopHistory.get_user_position(topuser, relative_to=g)
 
     if detect_mobile(request):
         template = 'mobile_index.html'
@@ -132,7 +132,7 @@ def homepage(request, page=u'1'):
                               {'last10': online_last10, 'activity': activity,
                               'is_homepage': True,
                               'top': topuser,
-                              'topgroups': topgroups,
+                              #'topgroups': topgroups,
                               'games': get_games(),
                               'news': news,
                               'more': more,

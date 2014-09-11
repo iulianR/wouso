@@ -14,27 +14,22 @@
 <div class="section">
 <div class="profile {% if group.parent %}group-{{ group.parent.name.lower }}{% endif %} group-{{ group.name.lower }}">
     <div class="points">
-        <div class="points-big">{{ group.live_points}}</div>
+        <div class="points-big">{{ group.live_points }}</div>
         <div class="rank">{% if top.disabled %}-{% else %}{% trans 'rank' %}: {{ top.position }}{% endif %}</div>
     </div>
 
     <div id="profile-info">
-    <h2>{{ group }} {% if group.title != '' %}<small>[{{ group.name }}]</small>{% endif %}</h2>
-    <p>{% trans 'Group' %}
-        {% if group.parent %}{% trans 'part of' %} {% player_race group.parent %}{% endif %}
-    </p>
-    <p>{{ group.players.count }} {% trans 'members' %}</p>
+        <h2>
+            {{ group.name }}
+        </h2>
+        <h3>{{ group.group_type }}</h3>
+        {% if group.group_type.parent_type %}
+            <h4>{{ group.group_type.parent_type }}: {% player_group group.parent %}</h4>
+        {% endif %}
+        <p>{{ group.players.count }} {% trans 'members' %}</p>
     </div>
-
-    {% if user.is_superuser %}
-    <div class="actions">
-        <span class="button-list">Superuser only: </span>
-        <a class="button" href="{% url admin:user_playergroup_change group.id %}">✍</a>
-    </div>
-    {% endif %}
 
     <div class="second">
-    </div>
     </div>
 
     <div class="section-content">
