@@ -4,7 +4,7 @@ from wouso.core.qpool.models import Question, Answer, Schedule, Category, Tag
 from wouso.core.magic.models import Spell
 from wouso.core.scoring.models import Formula
 from wouso.core.security.models import Report
-from wouso.core.user.models import Race, PlayerGroup, GroupType, PlayersGroup, Player, dfs_group_types, dfs_groups
+from wouso.core.user.models import Race, PlayerGroup, GroupType, PlayersGroup, Player, dfs_order
 from wouso.interface.apps.pages.models import StaticPage, NewsItem
 
 
@@ -217,7 +217,7 @@ class GroupTypeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(GroupTypeForm, self).__init__(*args, **kwargs)
         choices = [self.fields['parent_type'].choices.__iter__().next()]
-        for group_type in dfs_group_types():
+        for group_type in dfs_order(GroupType.objects.filter(parent_type=None)):
             choices.append(
                 (group_type.id, ''.join(['- ' * group_type.depth, group_type.__unicode__()]))
             )
@@ -231,14 +231,14 @@ class GroupForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
         choices = [self.fields['group_type'].choices.__iter__().next()]
-        for group_type in dfs_group_types():
+        for group_type in dfs_order(GroupType.objects.filter(parent_type=None)):
             choices.append(
                 (group_type.id, ''.join(['- ' * group_type.depth, group_type.__unicode__()]))
             )
         self.fields['group_type'].choices = choices
 
         choices = [self.fields['parent'].choices.__iter__().next()]
-        for group in dfs_groups():
+        for group in dfs_order(PlayersGroup.objects.filter(parent=None)):
             choices.append(
                 (group.id, ''.join(['- ' * group.depth, group.__unicode__()]))
             )
