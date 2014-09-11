@@ -117,8 +117,21 @@ def user_profile(request, id, page=u'1'):
 @login_required
 def player_group(request, id, page=u'1'):
     group = get_object_or_404(PlayersGroup, pk=id)
+
+    top_users = group.players.all().order_by('-points')
+    top_subgroups = PlayersGroup.all().order_by('-points')
+    activity_list = Activity.get_group_activiy(group)
+    paginator = Paginator(activity_list, 10)
+    try:
+        activity = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        activity = paginator.page(paginator.num_pages)
+
     return render_to_response('profile/group.html',
-                              {'group': group
+                              {'group': group,
+                               'top_subgroups': top_subgroups,
+                               'top_users': top_users,
+                               'activity': activity,
                                },
                               context_instance=RequestContext(request))
 # @login_required

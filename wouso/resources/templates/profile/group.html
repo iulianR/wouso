@@ -35,31 +35,12 @@
     <div class="section-content">
     <ul class="tabs">
         <li><a href="#tab-1">{% trans 'Top users' %}</a></li>
-        <li><a href="#tab-2">{% trans 'Activity' %}</a></li>
-        <li><a href="#tab-3">{% trans 'Evolution' %}</a></li>
+        <li><a href="#tab-3">{% trans 'Activity' %}</a></li>
+        <li><a href="#tab-4">{% trans 'Evolution' %}</a></li>
     </ul>
 
     <div class="tab_container">
         <div id="tab-1" class="tab_content">
-        <div class="subgroups">
-        {% if group.children %}
-        <h4>{% trans 'Top subgroups' %}</h4>
-        <ol class="top">{% for g in subgroups %}
-            <li>{% player_group g %} <span class="points">{{ g.live_points }}</span></li>
-            {% endfor %}
-        </ol>
-        {% endif %}
-        {% if group.sisters %}
-        <h4>{% trans 'Top same kind' %}</h4>
-        <ol class="top">{% for g in sistergroups %}
-                <li>{% player_group g %} <span class="points">{{ g.live_points }}</span></li>
-            {% endfor %}
-        </ol>
-
-        <a href="{% url top_classes %}">{% trans 'View all' %}</a>
-        {% endif %}
-        </div>
-
         <ol class="top top-left">
             {% for u in top_users %}
             <li>{% player u %}
@@ -74,11 +55,12 @@
         </ol>
         </div>
 
-        <div id="tab-2" class="tab_content">
+        <div id="tab-3" class="tab_content">
             {% include 'activity/stream.html' %}
         </div>
 
-        <div id="tab-3" class="tab_content">
+        <!-- TODO: FIX ME -->
+        <div id="tab-4" class="tab_content">
             <div class="subgroups">
                 <h3>{% trans 'Rank' %}</h3>
                 <p>{% trans 'Global' %}: <span class="points">{{ top.position }}</span></p>
@@ -117,6 +99,7 @@
             });
             </script>
         </div>
+        <!-- END TODO -->
     </div>
 </div>
 </div>

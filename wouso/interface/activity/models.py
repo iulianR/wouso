@@ -95,7 +95,7 @@ class Activity(models.Model):
         """
         Return all group activity
         """
-        query = cls.queryset().filter(Q(user_to__playergroup=group) | Q(user_from__playergroup=group)).distinct()
+        query = cls.queryset().filter(Q(user_to__playersgroup=group) | Q(user_from__playersgroup=group)).distinct()
         return cls.filter_activity(query, **kwargs)
 
     @classmethod
