@@ -13,11 +13,15 @@
 {% block content %}
 <div class="section">
 <div class="profile {% if group.parent %}group-{{ group.parent.name.lower }}{% endif %} group-{{ group.name.lower }}">
+    {% if group.image %}
+    <div class="banner">
+        <img class="banner" src="{{group.path}}" />
+    </div>
+    {% endif %}
     <div class="points">
         <div class="points-big">{{ group.live_points }}</div>
         <div class="rank">{% if top.disabled %}-{% else %}{% trans 'rank' %}: {{ top.position }}{% endif %}</div>
     </div>
-
     <div id="profile-info">
         <h2>
             {{ group.name }}

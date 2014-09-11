@@ -629,3 +629,10 @@ input.inline, label.inline {
 .pagination li.active {
     font-weight: bold;
 }
+div.banner {
+    float: right;
+}
+.banner {
+    width: 130px;
+    height: 150px;
+}

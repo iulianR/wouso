@@ -1,5 +1,6 @@
 # coding=utf-8
 import logging
+import os
 from md5 import md5
 from datetime import datetime, timedelta
 from django.db import models
@@ -72,10 +73,23 @@ class PlayersGroup(models.Model):
 
     # Attributes
     slogan = models.CharField(max_length=200)
+    image = models.ImageField(upload_to=settings.MEDIA_BANNERS_DIR, blank=True, null=True)
 
     players = models.ManyToManyField('user.Player', blank=True)
 
     points = models.FloatField(default=0, editable=False)
+
+    @property
+    def path(self):
+        """ Image can be stored inside uploads or in theme, return the
+        full path or the css class. """
+        if self.image:
+            return os.path.join(settings.MEDIA_BANNERS_URL, os.path.basename(str(self.image)))
+
+        if hasattr(self, 'group'):
+            return ("%s-%s" % (self.group if self.group else 'default', self.name)).lower()
+
+        return self.name.lower()
 
     @property
     def live_points(self):
@@ -298,9 +312,6 @@ class Player(models.Model):
 
     @property
     def group(self):
-        #groups = PlayersGroup.objects.filter(players__full_name=self.full_name)
-        #filtered = [g for g in groups if not g.children]
-        #print filtered
         return self._group()
 
     @cached_method
@@ -313,9 +324,6 @@ class Player(models.Model):
         except (PlayersGroup.DoesNotExist):
             groups = None
         filtered = [g for g in groups if not g.children]
-        print self.full_name
-        print PlayersGroup.objects.all()
-        print filtered
         return filtered[0] or None
 
     def set_group(self, group):
