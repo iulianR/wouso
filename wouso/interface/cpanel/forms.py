@@ -224,7 +224,7 @@ class GroupForm(forms.ModelForm):
 
         # Iterate through the selected players
         for u in players:
-            pl = Player.objects.get(nickname=u)
+            pl = Player.objects.get(full_name=u)
             # Add player to all parent groups
             p = self.cleaned_data['parent']
             while p is not None:
