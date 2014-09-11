@@ -4,9 +4,4 @@
 {% block title %}{% trans 'Top races' %}{% endblock %}
 
 {% block content %}
-<ol class="top">
-{% for g in topseries %}
-    <li>{% player_race g %} <span class="points">{{ g.points|floatformat:0 }}</span></li>
-{% endfor %}
-</ol>
 {% endblock %}

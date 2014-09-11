@@ -62,13 +62,6 @@ def player_group(group):
     else:
         return ''
 
-@register.simple_tag
-def player_race(race):
-    """ Render group with link to group's profile page """
-    link = reverse('race_view', args=(race.id,))
-
-    return u'<a href="%s%s" title="%s" class="cplayer-%s">%s</a>' % (link, race, race.name, race.name.lower(), race)
-
 
 @register.simple_tag
 def player_avatar(player_obj):
