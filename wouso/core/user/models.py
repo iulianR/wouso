@@ -28,8 +28,38 @@ class GroupType(models.Model):
     def children(self):
         return GroupType.objects.filter(parent_type__name=self.name)
 
+    @property
+    def depth(self):
+        """ Calculates the depth of the group type (how many group types are above) """
+        p, d = self.parent_type, 0
+        while p is not None:
+            d += 1
+            p = p.parent_type
+
+        return d
+
     def __unicode__(self):
         return self.name
+
+
+def dfs_group_types():
+    """
+        Returns the Group Types objects list in DFS order
+    """
+    result = []
+    stack = []
+    # for each Group Type with parent_type=None apply DFS algorithm
+    for root in GroupType.objects.filter(parent_type=None):
+        result.append(root)
+        for child in root.children:
+            stack.append(child)
+        while stack:
+            t = stack.pop()
+            result.append(t)
+            for child in t.children:
+                stack.append(child)
+
+    return result
 
 
 class PlayersGroup(models.Model):
@@ -69,6 +99,26 @@ class PlayersGroup(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+def dfs_groups():
+    """
+        Returns Groups objects list in DFS order
+    """
+    result = []
+    stack = []
+    # for each Group with parent=None apply DFS algorithm
+    for root in PlayersGroup.objects.filter(parent=None):
+        result.append(root)
+        for child in root.children:
+            stack.append(child)
+        while stack:
+            t = stack.pop()
+            result.append(t)
+            for child in t.children:
+                stack.append(child)
+
+    return result
 
 
 class Race(models.Model):
