@@ -134,6 +134,74 @@ def player_group(request, id, page=u'1'):
                                'activity': activity,
                                },
                               context_instance=RequestContext(request))
+# @login_required
+# def player_group(request, id, page=u'1'):
+#     group = get_object_or_404(PlayersGroup, pk=id)
+
+#     top_users = group.players.all().order_by('-points')
+#     subgroups = group.children
+#     if group.parent:
+#         sistergroups = NewHistory.get_children_top(group.parent, PlayerGroup)
+#     else:
+#         sistergroups = None
+#     history = GroupHistory(group)
+
+#     for g in group.sisters:
+#         g.top = GroupHistory(g)
+
+#     activity_list = Activity.get_group_activiy(group)
+#     paginator = Paginator(activity_list, 10)
+#     try:
+#         activity = paginator.page(page)
+#     except (EmptyPage, InvalidPage):
+#         activity = paginator.page(paginator.num_pages)
+
+#     return render_to_response('profile/group.html',
+#                               {'group': group,
+#                                'top_users': top_users,
+#                                'subgroups': subgroups,
+#                                'sistergroups': sistergroups,
+#                                'top': history,
+#                                'activity': activity,
+#                                },
+#                               context_instance=RequestContext(request))
+
+@login_required
+def player_race(request, race_id):
+    race = get_object_or_404(Race, pk=race_id)
+
+    top_users = race.player_set.order_by('-points')
+    activity_qs = Activity.get_race_activity(race)
+    paginator = Paginator(activity_qs, 20)
+    activity = paginator.page(1)
+
+    # get top position
+    races = list(Race.objects.filter(can_play=True))
+    races.sort(key=lambda a: a.points, reverse=True)
+    if race in races:
+        top_rank = races.index(race) + 1
+    else:
+        top_rank = '-'
+
+    groups = NewHistory.get_children_top(race, PlayerGroup)
+
+    # Get levels
+    levels = []
+    for i, limit in enumerate(God.LEVEL_LIMITS):
+        l = God.get_race_level(level_no=i + 1, race=race)
+        l.limit = limit
+        levels.append(l)
+
+    return render_to_response('profile/race.html',
+                            {'race': race,
+                             'children': groups,
+                             'top_users': top_users,
+                             'top_rank': top_rank,
+                             'top': ObjectHistory(),
+                             'activity': activity,
+                             'levels': levels},
+                            context_instance=RequestContext(request)
+    )
 
 
 @login_required
