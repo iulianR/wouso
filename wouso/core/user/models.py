@@ -231,6 +231,9 @@ class Player(models.Model):
 
     @property
     def group(self):
+        #groups = PlayersGroup.objects.filter(players__full_name=self.full_name)
+        #filtered = [g for g in groups if not g.children]
+        #print filtered
         return self._group()
 
     @cached_method
@@ -238,10 +241,12 @@ class Player(models.Model):
         """ Return the core game group, if any
         """
         try:
-            group = self.playergroup_set.filter(owner=None).get()
-        except (PlayerGroup.DoesNotExist, PlayerGroup.MultipleObjectsReturned):
-            group = None
-        return group
+            groups = PlayersGroup.objects.filter(
+                players__full_name=self.full_name)
+        except (PlayersGroup.DoesNotExist):
+            groups = None
+        filtered = [g for g in groups if not g.children]
+        return filtered[0]
 
     def set_group(self, group):
         """

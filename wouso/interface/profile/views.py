@@ -12,7 +12,7 @@ from django.utils.html import strip_tags
 from wouso.core.god import God
 from wouso.core.magic.models import Spell, PlayerSpellDue
 from wouso.core.scoring.models import History
-from wouso.core.user.models import Player, PlayerGroup, Race
+from wouso.core.user.models import Player, PlayerGroup, Race, PlayersGroup
 from wouso.games.challenge.models import Challenge
 from wouso.games.specialquest.models import SpecialQuestGame
 from wouso.interface.activity.models import Activity
@@ -75,6 +75,7 @@ def save_profile(request):
 @login_required
 def user_profile(request, id, page=u'1'):
     profile = get_object_or_404(Player, id=id)
+    print profile.group
 
     activity_list = Activity.get_player_activity(profile)
 
@@ -112,37 +113,45 @@ def user_profile(request, id, page=u'1'):
                                'message': message},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def player_group(request, id, page=u'1'):
-    group = get_object_or_404(PlayerGroup, pk=id)
-
-    top_users = group.players.all().order_by('-points')
-    subgroups = group.children
-    if group.parent:
-        sistergroups = NewHistory.get_children_top(group.parent, PlayerGroup)
-    else:
-        sistergroups = None
-    history = GroupHistory(group)
-
-    for g in group.sisters:
-        g.top = GroupHistory(g)
-
-    activity_list = Activity.get_group_activiy(group)
-    paginator = Paginator(activity_list, 10)
-    try:
-        activity = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        activity = paginator.page(paginator.num_pages)
-
+    group = get_object_or_404(PlayersGroup, pk=id)
     return render_to_response('profile/group.html',
-                              {'group': group,
-                               'top_users': top_users,
-                               'subgroups': subgroups,
-                               'sistergroups': sistergroups,
-                               'top': history,
-                               'activity': activity,
+                              {'group': group
                                },
                               context_instance=RequestContext(request))
+# @login_required
+# def player_group(request, id, page=u'1'):
+#     group = get_object_or_404(PlayersGroup, pk=id)
+
+#     top_users = group.players.all().order_by('-points')
+#     subgroups = group.children
+#     if group.parent:
+#         sistergroups = NewHistory.get_children_top(group.parent, PlayerGroup)
+#     else:
+#         sistergroups = None
+#     history = GroupHistory(group)
+
+#     for g in group.sisters:
+#         g.top = GroupHistory(g)
+
+#     activity_list = Activity.get_group_activiy(group)
+#     paginator = Paginator(activity_list, 10)
+#     try:
+#         activity = paginator.page(page)
+#     except (EmptyPage, InvalidPage):
+#         activity = paginator.page(paginator.num_pages)
+
+#     return render_to_response('profile/group.html',
+#                               {'group': group,
+#                                'top_users': top_users,
+#                                'subgroups': subgroups,
+#                                'sistergroups': sistergroups,
+#                                'top': history,
+#                                'activity': activity,
+#                                },
+#                               context_instance=RequestContext(request))
 
 @login_required
 def player_race(request, race_id):
