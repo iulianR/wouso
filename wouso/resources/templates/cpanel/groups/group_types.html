@@ -33,16 +33,26 @@
 
             <br/>
 
-            <ul>
+            <table class="table table-bordered table-condensed table-hover">
+                <tr>
+                    <th>Identifier</th>
+                    <th>Name</th>
+                    <th>Parent Type</th>
+                    <th>Manage</th>
+                </tr>
                 {% for g in group_types %}
-                <li>
-                    Identifier: {{g.identifier}} Name: {{g.name}} Parent type: {{g.parent_type}}
-                    <a class="btn btn-success btn-xs" href="{% url edit_group_type g.id %}">
-                        <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
-                    </a>
-                </li>
+                <tr>
+                    <td>{{ g.identifier }}</td>
+                    <td>{{ g.name }}</td>
+                    <td>{{ g.parent_type }}</td>
+                    <td>
+                        <a class="btn btn-success btn-xs" href="{% url edit_group_type g.id %}">
+                            <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit' %}
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
-            </ul>
+            </table>
         </div>
     </div>
 
