@@ -46,6 +46,10 @@ class PlayersGroup(models.Model):
         p = self.players.aggregate(total=models.Sum('points'))
         return p['total'] or 0
 
+    @property
+    def children(self):
+        return PlayersGroup.objects.filter(parent__name=self.name)
+
     def __unicode__(self):
         return self.name
 
