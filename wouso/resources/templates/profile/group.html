@@ -44,29 +44,39 @@
 
     <div class="tab_container">
         <div id="tab-1" class="tab_content">
-            <ol class="top top-left">
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th width="100%">Name</th>
+                    <th>Group</th>
+                    <th>Points</th>
+                </tr>
                 {% for u in top_users %}
-                <li>{% player u %}
-                    <span class="points w50">{{ u.points }}</span>
-                    {% if not group.parent %}
-                    <span class="points w50">{% player_group u.group  %}</span>
-                    {% endif %}
-                </li>
-                {% empty %}
-                <li class="empty">{% trans 'Sorry, no users in this group' %}</li>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{% player u %}</td>
+                    <td>{% player_group u.group %}</td>
+                    <td>{{ u.points }}</td>
+                </tr>
                 {% endfor %}
-            </ol>
+            </table>
         </div>
 
         <div id="tab-2" class="tab_content">
-            <ol class="top top-left">
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th width="100%">Name</th>
+                    <th>Points</th>
+                </tr>
                 {% for s in top_subgroups %}
-                <li>
-                    {% player_group s %}
-                    <span class="points w50">{{s.live_points}}</span>
-                </li>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{% player_group s %}</td>
+                    <td>{{ s.live_points }}</td>
+                </tr>
                 {% endfor %}
-            </ol>
+            </table>
         </div>
 
         <div id="tab-3" class="tab_content">
