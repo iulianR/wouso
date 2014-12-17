@@ -1,3 +1,5 @@
+import notifications
+
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
@@ -16,6 +18,8 @@ urlpatterns = patterns('',
     (r'^top/', include('wouso.interface.top.urls')),
 
     (r'^forum/', include('wouso.interface.forum.urls')),
+
+    (r'^inbox/notifications/', include(notifications.urls)),
 
     url(r'^leaderboard/$', 'wouso.interface.views.leaderboard_view', name='leaderboard'),
     url(r'^division/$', 'wouso.interface.views.division_view', name='division'),

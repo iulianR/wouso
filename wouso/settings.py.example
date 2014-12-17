@@ -171,6 +171,7 @@ INSTALLED_APPS = [
     'bootstrap3_datetime',
     'django_bootstrap_breadcrumbs',
     'ckeditor',
+    'notifications'
 ]
 
 # Rich text editor settings
