@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 from wouso.core import signals
 from wouso.core.god import God
 from wouso.core.magic.models import PlayerSpellDue, PlayerSpellAmount, PlayerArtifactAmount
+from core.signals import add_activity
+
 
 class MagicException(Exception): pass
 class InsufficientAmount(MagicException): pass
@@ -185,12 +187,11 @@ class MagicManager(object):
             signal_msg = _("cast a spell on himself/herself")
         else:
             signal_msg = _("cast a spell on {to} ")
-        signals.addActivity.send(sender=None, user_from=psdue.source,
-                                 user_to=psdue.player,
-                                 message=signal_msg,
-                                 arguments=dict(to=psdue.player),
-                                 action='cast',
-                                 game=None)
+        add_activity(sender=psdue.source,
+                     recipient=psdue.player,
+                     text=signal_msg,
+                     action='cast',
+                     arguments=dict(to=psdue.player))
 
         # Post-cast God action (there are specific modifiers, such as clean-spells
         # that are implemented in God

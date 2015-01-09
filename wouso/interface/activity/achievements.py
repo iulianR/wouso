@@ -2,6 +2,7 @@ import logging
 from datetime import datetime, timedelta
 from django.utils.translation import ugettext_noop
 from core import scoring
+from core.magic.models import Artifact
 from core.scoring.sm import score
 from wouso.core.common import App
 from wouso.core.user.models import Player
@@ -9,6 +10,7 @@ from wouso.core.scoring.models import History
 from wouso.interface.apps.messaging.models import Message
 from wouso.games.challenge.models import Challenge
 from wouso.core.magic.models import PlayerSpellDue, SpellHistory, Spell
+from core.signals import add_activity
 from models import Activity
 from wouso.core.signals import addActivity, messageSignal
 
@@ -258,9 +260,7 @@ class Achievements(App):
         if result is not None:
             message = ugettext_noop('earned {artifact}')
             action_msg = 'earned-ach'
-            addActivity.send(sender=None, user_from=player, game=None, message=message,
-                             arguments=dict(artifact=result.artifact), action=action_msg
-            )
+            add_activity(player, player, message, action_msg,arguments=dict(artifact=result.artifact.title))
             Message.send(sender=None, receiver=player, subject="Achievement", text="You have just earned " + modifier)
         else:
             logging.debug('%s would have earned %s, but there was no artifact' % (player, modifier))

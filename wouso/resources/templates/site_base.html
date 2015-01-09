@@ -18,12 +18,17 @@
         {% endif %}
         {% block css %}{% endblock %}
     </style>
+    <link type="text/css" rel="stylesheet" href="{{ basepath }}/static/css/jquery.qtip.css" />
+
     <script type="text/javascript" src="{{ basepath }}/static/js/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="{{ basepath }}/static/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{{ basepath }}/static/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="{{ basepath }}/static/js/format.item.js"></script>
     <script type="text/javascript" src="{{ basepath }}/static/js/jquery.timers.js"></script>
     <script type="text/javascript" src="{{ basepath }}/static/js/ajaxify.js"></script>
+
+    <!-- Used for the notifications tooltip -->
+    <script type="text/javascript" src="{{ basepath }}/static/js/jquery.qtip.js"></script>
 
     {% if config_header_autoreload %}
     <script type="text/javascript">
