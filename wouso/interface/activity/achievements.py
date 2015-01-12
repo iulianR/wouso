@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, timedelta
+from django.core import signals
 from django.utils.translation import ugettext_noop
 from core import scoring
 from core.magic.models import Artifact
@@ -10,9 +11,8 @@ from wouso.core.scoring.models import History
 from wouso.interface.apps.messaging.models import Message
 from wouso.games.challenge.models import Challenge
 from wouso.core.magic.models import PlayerSpellDue, SpellHistory, Spell
-from core.signals import add_activity
+from wouso.core.signals import add_activity, addActivity, messageSignal
 from models import Activity
-from wouso.core.signals import addActivity, messageSignal
 
 
 def consecutive_seens(player, timestamp):
@@ -260,7 +260,13 @@ class Achievements(App):
         if result is not None:
             message = ugettext_noop('earned {artifact}')
             action_msg = 'earned-ach'
-            add_activity(player, player, message, action_msg,arguments=dict(artifact=result.artifact.title))
+            # addActivity.send(sender=None, user_from=player,
+            #          user_to=player,
+            #          action=action_msg,
+            #          message=message,
+            #          arguments=dict(artifact=result.artifact.title),
+            #          game=None)
+            add_activity(player, player, message, action_msg, arguments=dict(artifact=result.artifact.title))
             Message.send(sender=None, receiver=player, subject="Achievement", text="You have just earned " + modifier)
         else:
             logging.debug('%s would have earned %s, but there was no artifact' % (player, modifier))

@@ -8,6 +8,8 @@ from wouso.core.user.models import Player
 from wouso.core.scoring.models import Coin, Formula, History
 from wouso.core.god import God
 from wouso.core.game import get_games, Game
+from core.signals import add_activity
+
 
 class NotSetupError(Exception): pass
 class InvalidFormula(Exception): pass
@@ -158,10 +160,12 @@ def update_points(player, game):
             action_msg = 'gold-lost'
             signal_msg = ugettext_noop("downgraded to level {level} and lost {amount} gold")
             rollback(player, None, 'level-gold', external_id=player.level_no)
-            signals.addActivity.send(sender=None, user_from=player,
-                                user_to=player, message=signal_msg,
-                                arguments=dict(level=level, amount=amount),
-                                game=game, action=action_msg)
+            add_activity(sender=player,
+                         recipient=player,
+                         text=signal_msg,
+                         action=action_msg,
+                         arguments=dict(level=level, amount=amount),
+                         game=game)
         else:
 
             amount = calculate('level-gold', level=level)
@@ -176,10 +180,12 @@ def update_points(player, game):
                 amount['gold'] = 0
             signal_msg = ugettext_noop("upgraded to level {level} and received {amount} gold")
             action_msg = 'gold-won'
-            signals.addActivity.send(sender=None, user_from=player,
-                    user_to=player, message=signal_msg,
-                                arguments=dict(level=level, amount=amount['gold']),
-                                game=None, action=action_msg)
+            add_activity(sender=player,
+                         recipient=player,
+                         text=signal_msg,
+                         action=action_msg,
+                         arguments=dict(level=level, amount=amount),
+                         game=game)
         player.level_no = level
         player.save()
 

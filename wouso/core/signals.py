@@ -9,22 +9,21 @@ postCast = Signal()
 postExpire = Signal()
 
 
-def add_activity(sender, recipient, text, action, arguments=None, game=None, **kwargs):
+def add_activity(sender, recipient, message, action, arguments=None, game=None, **kwargs):
     """ Simplified addActivity signal.
     """
     addActivity.send(sender=None,
                      user_from=sender,
                      user_to=recipient,
                      action=action,
-                     message=text,
+                     message=message,
                      arguments=arguments,
-                     game=game
-    )
+                     game=game)
 
     if 'to' in arguments.keys():
         arguments['to'] = 'you'
+    else:
+        message = "You " + message
 
-    notify_message = text.format(**arguments)
+    notify_message = message.format(**arguments)
     notify.send(sender=sender.user, recipient=recipient.user, verb=notify_message)
-
-
