@@ -260,13 +260,11 @@ class Achievements(App):
         if result is not None:
             message = ugettext_noop('earned {artifact}')
             action_msg = 'earned-ach'
-            # addActivity.send(sender=None, user_from=player,
-            #          user_to=player,
-            #          action=action_msg,
-            #          message=message,
-            #          arguments=dict(artifact=result.artifact.title),
-            #          game=None)
-            add_activity(player, player, message, action_msg, arguments=dict(artifact=result.artifact.title))
+            add_activity(sender=player,
+                         recipient=player,
+                         message=message,
+                         action=action_msg,
+                         arguments=dict(artifact=result.artifact.title))
             Message.send(sender=None, receiver=player, subject="Achievement", text="You have just earned " + modifier)
         else:
             logging.debug('%s would have earned %s, but there was no artifact' % (player, modifier))
