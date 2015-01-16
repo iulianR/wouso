@@ -9,16 +9,23 @@ postCast = Signal()
 postExpire = Signal()
 
 
-def add_activity(sender, recipient, message, action, arguments=None, game=None, **kwargs):
+def add_activity(sender, recipient, message, action, arguments=None, game=None, public=True, **kwargs):
     """ Simplified addActivity signal.
     """
+    if not arguments:
+        arguments = {}
+    arguments = arguments or None
     addActivity.send(sender=None,
                      user_from=sender,
                      user_to=recipient,
                      action=action,
                      message=message,
                      arguments=arguments,
+                     public=public,
                      game=game)
+
+    if not public:
+        return
 
     # Remove user_to from the notification message as notify.send() only needs
     # the verb. The receiving user is saved separately.

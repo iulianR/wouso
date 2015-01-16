@@ -172,7 +172,7 @@ class ScoringFirstLogin(WousoTest):
         # this won't work, since the activity is sent in our custom view
         #self.client.login(username=player.user.username, password='test')
         # using this instead
-        signals.addActivity.send(sender=None, user_from=player, action="login", game = None, public=False)
+        signals.addActivity.send(sender=None, user_from=player, action="login", game=None, public=False)
 
         player = Player.objects.get(pk=player.pk)
         self.assertEqual(player.points, 10)

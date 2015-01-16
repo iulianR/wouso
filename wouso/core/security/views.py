@@ -24,12 +24,14 @@ def report(request,id):
             user_from=request.user
             user_to = User.objects.get(pk=id)
 
-            signals.addActivity.send(sender=None,
-                                    user_from=user_from.get_profile().get_extension(Player),
-                                    user_to=user_to.get_profile().get_extension(Player),
-                                    action="report",
-                                    public=False,
-                                    game=None)
+            signals.add_activity(sender=None,
+                                 sender=user_from.get_profile().get_extension(Player),
+                                 receiver=user_to.get_profile().get_extension(Player),
+                                 message='',
+                                 action="report",
+                                 public=False,
+                                 game=None)
+
             add_report(user_from=user_from, user_to=user_to, text=request.POST['message'])
             request.session["report_msg"] = "The report was successfully submitted"
             return redirect('player_profile', id=id)
