@@ -129,11 +129,11 @@ def bazaar_buy(request, spell):
         signal_msg = ugettext_noop('bought a spell')
         action_msg = 'spell-buy'
         signals.addActivity.send(sender=None, user_from=player,
-                        user_to=player,
-                        message=signal_msg,
-                        game=None,
-                        action=action_msg,
-                        public=False)
+                                 user_to=player,
+                                 message=signal_msg,
+                                 game=None,
+                                 action=action_msg,
+                                 public=False)
         SpellHistory.bought(player, spell)
         message = _("Successfully acquired")
 
