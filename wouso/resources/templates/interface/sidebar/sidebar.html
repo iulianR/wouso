@@ -2,8 +2,9 @@
 {% load ui %}
 {% load artifacts %}
 {% load i18n %}
+{% load top %}
 
 {% include 'interface/sidebar/search.html' %}
 {% include 'interface/sidebar/progress.html' %}
-{% include 'interface/sidebar/leaderboard.html' %}
+{% render_top %}
 {% include 'messaging/sidebar.html' %}

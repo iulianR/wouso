@@ -132,12 +132,6 @@ def homepage(request, page=u'1'):
         more = True
     news = news[:10]
 
-    top_races = list(Race.objects.exclude(can_play=False))
-    top_races.sort(key=lambda a: a.points, reverse=True)
-    top_races = top_races[:10]
-
-    top_players = Player.objects.order_by('-points')[:10]
-
     return render_to_response(template,
                               {'activity': activity,
                               'is_homepage': True,
@@ -145,9 +139,7 @@ def homepage(request, page=u'1'):
                               'topgroups': topgroups,
                               'games': get_games(),
                               'news': news,
-                              'more': more,
-                              'top_races': top_races,
-                              'top_players': top_players
+                              'more': more
                               },
                               context_instance=RequestContext(request))
 
