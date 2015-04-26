@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test import Client
 from django.utils.translation import ugettext as _
 
 from wouso.core.qpool.models import Question, Answer, Category
+from wouso.core.tests import WousoTest
 
 from models import *
 
@@ -326,6 +328,7 @@ class TeamQuestStatusTest(TestCase):
     def test_quest_status_time_finished_before_time_started(self):
         pass
 
+
 class TeamQuestGameTest(TestCase):
     def setUp(self):
         category = Category.add('quest')
@@ -341,3 +344,36 @@ class TeamQuestGameTest(TestCase):
 
         quest = TeamQuestGame.get_current()
         self.assertEqual(quest, None)
+
+
+class TeamQuestViewsTest(WousoTest):
+
+    def setUp(self):
+        self.admin = self._get_superuser()
+        self.c = Client()
+        self.c.login(username='admin', password='admin')
+
+    def test_cpanel_home_view_basic(self):
+        response = self.c.get(reverse('teamquest_home'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Add team quest')
+        self.assertContains(response, 'Quests')
+        self.assertContains(response, 'Groups')
+        self.assertContains(response, 'Name')
+        self.assertContains(response, 'Manage')
+
+    def test_cpanel_home_view_no_teamquests(self):
+        response = self.c.get(reverse('teamquest_home'))
+        self.assertContains(response, 'No Team Quests added yet!')
+
+    def test_cpanel_home_view_list_teamquests(self):
+        now = datetime.datetime.now()
+        TeamQuest.objects.create(start_time=now, end_time=now+timedelta(days=1),
+                                 title='TeamQuest no.1')
+        TeamQuest.objects.create(start_time=now+timedelta(days=1), end_time=now+timedelta(days=2),
+                                 title='TeamQuest no.2')
+        # Check if Team Quest are displayed
+        response = self.c.get(reverse('teamquest_home'))
+        self.assertContains(response, 'TeamQuest no.1')
+        self.assertContains(response, 'TeamQuest no.2')
